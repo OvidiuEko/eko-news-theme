@@ -1,0 +1,6 @@
+-----
+deployment:
+  tasks:
+    - export DEPLOY_PATH="/home/inlink/public_html/wp-content/themes/eko-news"
+    - /bin/mkdir -p "$DEPLOY_PATH"
+    - /bin/rsync -a --delete --exclude ".git" ./eko-news/ "$DEPLOY_PATH/"
