@@ -5,7 +5,16 @@ if (!defined('ABSPATH')) exit;
  * Tema: Eko News
  * Versiune: 1.0.0
  */
-define('EKO_VER', '1.0.0');
+// Versiune temă (fallback sigur)
+if (!defined('EKO_VER')) {
+  define('EKO_VER', '1.0.0');
+}
+
+// Compatibilitate: inc/assets.php folosește EKO_NEWS_VERSION
+if (!defined('EKO_NEWS_VERSION')) {
+  define('EKO_NEWS_VERSION', EKO_VER);
+}
+
 define('EKO_PATH', trailingslashit(get_template_directory()));
 define('EKO_URI',  trailingslashit(get_template_directory_uri()));
 
