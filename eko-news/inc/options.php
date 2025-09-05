@@ -79,6 +79,30 @@ function eko_news_render_theme_page() {
         $placeholder  = isset( $_POST['image_placeholder'] ) ? eko_news_sanitize_url_strict( wp_unslash( $_POST['image_placeholder'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing
         $pattern      = isset( $_POST['image_pattern'] ) ? eko_news_sanitize_url_strict( wp_unslash( $_POST['image_pattern'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing
 
+        // Layout.
+        $container_width = isset( $_POST['layout_container_width'] ) ? (int) wp_unslash( $_POST['layout_container_width'] ) : $defaults['layout']['container_width']; // phpcs:ignore WordPress.Security.NonceVerification.Missing
+        $container_width = max( 600, min( 1920, $container_width ) );
+        $logo_max_h      = isset( $_POST['layout_logo_max_h'] ) ? (int) wp_unslash( $_POST['layout_logo_max_h'] ) : $defaults['layout']['logo_max_h']; // phpcs:ignore WordPress.Security.NonceVerification.Missing
+        $logo_max_h      = max( 16, min( 160, $logo_max_h ) );
+        $header_pad_y    = isset( $_POST['layout_header_pad_y'] ) ? (int) wp_unslash( $_POST['layout_header_pad_y'] ) : $defaults['layout']['header_pad_y']; // phpcs:ignore WordPress.Security.NonceVerification.Missing
+        $header_pad_y    = max( 0, min( 48, $header_pad_y ) );
+        $archive_cols    = isset( $_POST['layout_archive_cols'] ) ? (int) wp_unslash( $_POST['layout_archive_cols'] ) : $defaults['layout']['archive_cols']; // phpcs:ignore WordPress.Security.NonceVerification.Missing
+        $archive_cols    = max( 1, min( 4, $archive_cols ) );
+
+        // Meta toggles.
+        $show_author  = isset( $_POST['meta_show_author'] ) ? 1 : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing
+        $show_date    = isset( $_POST['meta_show_date'] ) ? 1 : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing
+        $show_reading = isset( $_POST['meta_show_reading'] ) ? 1 : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing
+
+        // Theme.
+        $dark_mode = isset( $_POST['theme_dark_mode'] ) ? 1 : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing
+
+        // Home.
+        $home_live_tag     = isset( $_POST['home_live_tag'] ) ? sanitize_title( wp_unslash( $_POST['home_live_tag'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing
+        $home_sec_one_cat  = isset( $_POST['home_section_one_cat'] ) ? sanitize_title( wp_unslash( $_POST['home_section_one_cat'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing
+        $home_sec_two_cat  = isset( $_POST['home_section_two_cat'] ) ? sanitize_title( wp_unslash( $_POST['home_section_two_cat'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing
+        $home_sec_three_cat= isset( $_POST['home_section_three_cat'] ) ? sanitize_title( wp_unslash( $_POST['home_section_three_cat'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing
+
         $new = array(
             'brand'  => array(
                 'name'        => $brand_name,
@@ -96,6 +120,26 @@ function eko_news_render_theme_page() {
                 'hero_default' => $hero_default,
                 'placeholder'  => $placeholder,
                 'pattern'      => $pattern,
+            ),
+            'layout' => array(
+                'container_width' => $container_width,
+                'logo_max_h'      => $logo_max_h,
+                'header_pad_y'    => $header_pad_y,
+                'archive_cols'    => $archive_cols,
+            ),
+            'meta' => array(
+                'show_author'  => $show_author,
+                'show_date'    => $show_date,
+                'show_reading' => $show_reading,
+            ),
+            'theme' => array(
+                'dark_mode' => $dark_mode,
+            ),
+            'home' => array(
+                'live_tag'        => $home_live_tag,
+                'section_one_cat' => $home_sec_one_cat,
+                'section_two_cat' => $home_sec_two_cat,
+                'section_three_cat'=> $home_sec_three_cat,
             ),
         );
 
@@ -177,6 +221,64 @@ function eko_news_render_theme_page() {
 
     echo '</tbody></table>';
 
+    // Layout section.
+    echo '<h2>' . esc_html__( 'Layout', 'eko-news' ) . '</h2>';
+    echo '<table class="form-table" role="presentation"><tbody>';
+    echo '<tr><th scope="row"><label for="layout_container_width">' . esc_html__( 'Container width (px)', 'eko-news' ) . '</label></th><td>';
+    echo '<input type="number" id="layout_container_width" name="layout_container_width" class="small-text" min="600" max="1920" value="' . esc_attr( (int) $current['layout']['container_width'] ) . '" />';
+    echo '<p class="description">' . esc_html__( 'Max page width in pixels', 'eko-news' ) . '</p>';
+    echo '</td></tr>';
+    echo '<tr><th scope="row"><label for="layout_logo_max_h">' . esc_html__( 'Logo max height (px)', 'eko-news' ) . '</label></th><td>';
+    echo '<input type="number" id="layout_logo_max_h" name="layout_logo_max_h" class="small-text" min="16" max="160" value="' . esc_attr( (int) $current['layout']['logo_max_h'] ) . '" />';
+    echo '</td></tr>';
+    echo '<tr><th scope="row"><label for="layout_header_pad_y">' . esc_html__( 'Header vertical padding (px)', 'eko-news' ) . '</label></th><td>';
+    echo '<input type="number" id="layout_header_pad_y" name="layout_header_pad_y" class="small-text" min="0" max="48" value="' . esc_attr( (int) $current['layout']['header_pad_y'] ) . '" />';
+    echo '</td></tr>';
+    echo '<tr><th scope="row"><label for="layout_archive_cols">' . esc_html__( 'Archive columns', 'eko-news' ) . '</label></th><td>';
+    echo '<input type="number" id="layout_archive_cols" name="layout_archive_cols" class="small-text" min="1" max="4" value="' . esc_attr( (int) $current['layout']['archive_cols'] ) . '" />';
+    echo '</td></tr>';
+    echo '</tbody></table>';
+
+    // Meta section.
+    echo '<h2>' . esc_html__( 'Meta', 'eko-news' ) . '</h2>';
+    echo '<table class="form-table" role="presentation"><tbody>';
+    echo '<tr><th scope="row">' . esc_html__( 'Show author', 'eko-news' ) . '</th><td>';
+    echo '<label><input type="checkbox" name="meta_show_author" ' . checked( ! empty( $current['meta']['show_author'] ), true, false ) . ' /> ' . esc_html__( 'Display author name', 'eko-news' ) . '</label>';
+    echo '</td></tr>';
+    echo '<tr><th scope="row">' . esc_html__( 'Show date', 'eko-news' ) . '</th><td>';
+    echo '<label><input type="checkbox" name="meta_show_date" ' . checked( ! empty( $current['meta']['show_date'] ), true, false ) . ' /> ' . esc_html__( 'Display publish date', 'eko-news' ) . '</label>';
+    echo '</td></tr>';
+    echo '<tr><th scope="row">' . esc_html__( 'Show reading time', 'eko-news' ) . '</th><td>';
+    echo '<label><input type="checkbox" name="meta_show_reading" ' . checked( ! empty( $current['meta']['show_reading'] ), true, false ) . ' /> ' . esc_html__( 'Display reading time', 'eko-news' ) . '</label>';
+    echo '</td></tr>';
+    echo '</tbody></table>';
+
+    // Theme section.
+    echo '<h2>' . esc_html__( 'Theme', 'eko-news' ) . '</h2>';
+    echo '<table class="form-table" role="presentation"><tbody>';
+    echo '<tr><th scope="row">' . esc_html__( 'Dark mode', 'eko-news' ) . '</th><td>';
+    echo '<label><input type="checkbox" name="theme_dark_mode" ' . checked( ! empty( $current['theme']['dark_mode'] ), true, false ) . ' /> ' . esc_html__( 'Enable dark colors on frontend', 'eko-news' ) . '</label>';
+    echo '</td></tr>';
+    echo '</tbody></table>';
+
+    // Homepage section.
+    echo '<h2>' . esc_html__( 'Homepage', 'eko-news' ) . '</h2>';
+    echo '<table class="form-table" role="presentation"><tbody>';
+    echo '<tr><th scope="row"><label for="home_live_tag">' . esc_html__( 'Live tag slug', 'eko-news' ) . '</label></th><td>';
+    echo '<input type="text" id="home_live_tag" name="home_live_tag" class="regular-text" value="' . esc_attr( $current['home']['live_tag'] ) . '" placeholder="live" />';
+    echo '<p class="description">' . esc_html__( 'Tag slug for Live list', 'eko-news' ) . '</p>';
+    echo '</td></tr>';
+    echo '<tr><th scope="row"><label for="home_section_one_cat">' . esc_html__( 'Section one category (slug)', 'eko-news' ) . '</label></th><td>';
+    echo '<input type="text" id="home_section_one_cat" name="home_section_one_cat" class="regular-text" value="' . esc_attr( $current['home']['section_one_cat'] ) . '" placeholder="features" />';
+    echo '</td></tr>';
+    echo '<tr><th scope="row"><label for="home_section_two_cat">' . esc_html__( 'Section two category (slug)', 'eko-news' ) . '</label></th><td>';
+    echo '<input type="text" id="home_section_two_cat" name="home_section_two_cat" class="regular-text" value="' . esc_attr( $current['home']['section_two_cat'] ) . '" />';
+    echo '</td></tr>';
+    echo '<tr><th scope="row"><label for="home_section_three_cat">' . esc_html__( 'Section three category (slug)', 'eko-news' ) . '</label></th><td>';
+    echo '<input type="text" id="home_section_three_cat" name="home_section_three_cat" class="regular-text" value="' . esc_attr( $current['home']['section_three_cat'] ) . '" />';
+    echo '</td></tr>';
+    echo '</tbody></table>';
+
     submit_button( __( 'Save Changes', 'eko-news' ) );
 
     echo '</form>';
@@ -188,4 +290,3 @@ function eko_news_render_theme_page() {
 
     echo '</div>';
 }
-

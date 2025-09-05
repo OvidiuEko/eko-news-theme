@@ -1,0 +1,22 @@
+﻿<?php get_header(); ?>
+<main class="container" style="margin:24px auto;max-width:900px;">
+  <?php if (have_posts()): while (have_posts()): the_post(); ?>
+    <article>
+      <h1><?php the_title(); ?></h1>
+      <p class="meta"><?php echo esc_html( get_the_author() ); ?> &bull; <?php echo esc_html( get_the_date() ); ?><?php if ( function_exists( "eko_reading_time" ) ) { echo " &bull; " . esc_html( eko_reading_time() ); } ?></p>
+      <?php if (has_post_thumbnail()): ?>
+        <div class="thumb-16x9" style="margin:12px 0 16px"><?php the_post_thumbnail('large'); ?></div>
+      <?php endif; ?>
+      <div class="entry-content"><?php the_content(); ?></div>
+    </article>
+    <nav class="pagination" style="justify-content:space-between">
+      <div><?php previous_post_link('%link','&larr; Anterior'); ?></div>
+      <div><?php next_post_link('%link','Următor &rarr;'); ?></div>
+    </nav>
+  <?php endwhile; endif; ?>
+</main>
+<?php get_footer(); ?>
+
+
+
+

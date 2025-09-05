@@ -1,4 +1,4 @@
-<?php ?>
+﻿<?php ?>
 <!doctype html>
 <html <?php language_attributes(); ?>>
 <head>
@@ -27,5 +27,10 @@
       );
       ?>
     </nav>
+    <form role="search" method="get" class="site-search" action="<?php echo esc_url( home_url( '/' ) ); ?>">
+      <label class="screen-reader-text" for="s"><?php esc_html_e( 'Search','eko-news' ); ?></label>
+      <input type="search" id="s" name="s" value="<?php echo esc_attr( get_search_query() ); ?>" placeholder="<?php esc_attr_e( 'Search…','eko-news' ); ?>">
+    </form>
   </div>
 </header>
+
