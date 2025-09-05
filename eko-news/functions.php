@@ -1,61 +1,40 @@
 <?php
-/**
- * Eko News theme bootstrap.
- *
- * @package EkoNews
- */
-
-defined( 'ABSPATH' ) || exit;
-
-// Theme constants.
-if ( ! defined( 'EKO_NEWS_VERSION' ) ) {
-    define( 'EKO_NEWS_VERSION', '1.0.0' );
-}
-if ( ! defined( 'EKO_NEWS_DIR' ) ) {
-    define( 'EKO_NEWS_DIR', get_template_directory() );
-}
-if ( ! defined( 'EKO_NEWS_URI' ) ) {
-    define( 'EKO_NEWS_URI', get_template_directory_uri() );
-}
-
-// Includes.
-require_once EKO_NEWS_DIR . '/inc/setup.php';
-require_once EKO_NEWS_DIR . '/inc/assets.php';
-require_once EKO_NEWS_DIR . '/inc/options.php';
+if (!defined('ABSPATH')) exit;
 
 /**
- * Estimate reading time for a post.
- *
- * @param int|WP_Post|null $post Post object or ID. Defaults to current post.
- * @param int              $wpm  Words per minute (default 200).
- * @return string Formatted minutes string, e.g. "3 min".
+ * Tema: Eko News
+ * Versiune: 1.0.0
  */
-function eko_news_reading_time( $post = null, $wpm = 200 ) {
-    $post    = get_post( $post );
-    $content = '';
-
-    if ( $post ) {
-        $content = $post->post_content;
-    } elseif ( have_posts() ) {
-        $content = get_the_content( null, false );
-    }
-
-    $text   = wp_strip_all_tags( (string) $content );
-    $words  = str_word_count( $text );
-    $wpm    = (int) max( 1, $wpm );
-    $minutes = (int) max( 1, ceil( $words / $wpm ) );
-
-    return sprintf( __( '%s min', 'eko-news' ), number_format_i18n( $minutes ) );
-}
+define('EKO_VER', '1.0.0');
+define('EKO_PATH', trailingslashit(get_template_directory()));
+define('EKO_URI',  trailingslashit(get_template_directory_uri()));
 
 /**
- * Register additional image size if missing.
+ * Include-urile temei
  */
-function eko_news_register_image_sizes() {
-    global $_wp_additional_image_sizes;
-    $has = ( isset( $_wp_additional_image_sizes ) && is_array( $_wp_additional_image_sizes ) && isset( $_wp_additional_image_sizes['news-thumb'] ) );
-    if ( ! $has ) {
-        add_image_size( 'news-thumb', 400, 250, true );
-    }
+require_once EKO_PATH.'inc/setup.php';
+require_once EKO_PATH.'inc/assets.php';
+require_once EKO_PATH.'inc/options.php';
+
+/**
+ * === Image sizes & utilitare ===
+ */
+
+// Dimensiune pentru carduri din grid (thumb 16:9 aproximativ 400x250)
+add_action('after_setup_theme', function () {
+  // dacă există deja, WordPress o suprascrie cu aceste setări
+  add_image_size('news-thumb', 400, 250, true);
+}, 20);
+
+/**
+ * Timp de citire (aprox. 200 wpm)
+ * Exemplu de utilizare:
+ *   echo eko_reading_time(); // "3 min"
+ */
+function eko_reading_time($post_id = null) {
+  $post = get_post($post_id ?: get_the_ID());
+  if (!$post) return '';
+  $words = str_word_count( wp_strip_all_tags($post->post_content) );
+  $mins  = max(1, (int) ceil($words / 200));
+  return $mins . ' min';
 }
-add_action( 'after_setup_theme', 'eko_news_register_image_sizes' );
