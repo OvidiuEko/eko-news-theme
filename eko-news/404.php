@@ -14,6 +14,7 @@ get_header();
         <p class="meta"><?php esc_html_e( 'Sorry, we couldn’t find what you’re looking for.', 'eko-news' ); ?></p>
 
         <?php get_search_form(); ?>
+        <p style="margin-top:12px;"><a href="<?php echo esc_url( home_url( '/' ) ); ?>">&larr; <?php esc_html_e( 'Back to homepage', 'eko-news' ); ?></a></p>
 
         <section style="margin-top: calc(var(--eko-gap) * 2);">
             <h2><?php esc_html_e( 'Browse popular categories', 'eko-news' ); ?></h2>
@@ -37,4 +38,3 @@ get_header();
 
 <?php
 get_footer();
-

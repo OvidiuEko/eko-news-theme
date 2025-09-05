@@ -28,13 +28,23 @@ add_action('after_setup_theme', function () {
 
 /**
  * Timp de citire (aprox. 200 wpm)
- * Exemplu de utilizare:
- *   echo eko_reading_time(); // "3 min"
+ * Exemplu: echo eko_reading_time(); // "3 min"
  */
-function eko_reading_time($post_id = null) {
-  $post = get_post($post_id ?: get_the_ID());
-  if (!$post) return '';
-  $words = str_word_count( wp_strip_all_tags($post->post_content) );
-  $mins  = max(1, (int) ceil($words / 200));
-  return $mins . ' min';
+if ( ! function_exists( 'eko_reading_time' ) ) {
+  function eko_reading_time( $post_id = null ) {
+    $post = get_post( $post_id ?: get_the_ID() );
+    if ( ! $post ) {
+      return '';
+    }
+    $words = str_word_count( wp_strip_all_tags( $post->post_content ) );
+    $mins  = max( 1, (int) ceil( $words / 200 ) );
+    return $mins . ' min';
+  }
+}
+
+// Alias pentru compatibilitate cu template-urile anterioare.
+if ( ! function_exists( 'eko_news_reading_time' ) ) {
+  function eko_news_reading_time( $post_id = null ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+    return eko_reading_time( $post_id );
+  }
 }

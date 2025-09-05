@@ -1,9 +1,60 @@
-/*
-Theme Name: Eko News
-Theme URI: https://ekogroup.ro
-Author: Eko Team
-Author URI: https://ekogroup.ro
-Description: Elementor-ready theme with built-in brand settings.
-Version: 1.0.0
-Text Domain: eko-news
-*/
+/* === Base / Typography === */
+:root{
+  --eko-primary:#0052FF;
+  --eko-secondary:#FF2B6A;
+  --eko-accent:#FFC300;
+  --eko-text:#0F172A;
+  --eko-bg:#FFFFFF;
+  --eko-muted:#f3f4f6;
+  --eko-radius:10px;
+  --eko-gap:16px;
+}
+
+html,body{margin:0;padding:0;background:var(--eko-bg);color:var(--eko-text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;line-height:1.6}
+a{color:var(--eko-primary);text-decoration:none}
+a:hover{opacity:.85}
+.container{max-width:1200px;margin:0 auto;padding:0 16px}
+.img-fluid{max-width:100%;height:auto;border-radius:var(--eko-radius)}
+
+/* === Header / Nav === */
+.site-header{border-bottom:1px solid #e5e7eb;background:#fff;position:sticky;top:0;z-index:50}
+.site-header .wrap{display:flex;align-items:center;justify-content:space-between;padding:10px 0}
+.site-brand{display:flex;align-items:center;gap:12px;font-weight:700}
+.site-nav ul{list-style:none;margin:0;padding:0;display:flex;gap:18px;flex-wrap:wrap}
+.site-nav a{display:block;padding:10px 6px;border-radius:8px}
+.site-nav a:hover{background:var(--eko-muted)}
+
+/* === Grid / Cards === */
+.grid{display:grid;gap:var(--eko-gap)}
+.grid.cols-3{grid-template-columns:repeat(3,1fr)}
+@media (max-width:1024px){.grid.cols-3{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:640px){.grid.cols-3{grid-template-columns:1fr}}
+
+/* Support legacy class naming used by some templates */
+.grid.grid-3{grid-template-columns:repeat(3,1fr)}
+@media (max-width:1024px){.grid.grid-3{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:640px){.grid.grid-3{grid-template-columns:1fr}}
+
+.card{border:1px solid #e5e7eb;border-radius:var(--eko-radius);overflow:hidden;background:#fff;display:flex;flex-direction:column}
+.card-body{padding:12px}
+.card h3,.card h2{margin:8px 0 4px}
+.meta{font-size:.9rem;opacity:.7}
+
+/* Lead (articol mare) */
+.lead{display:grid;grid-template-columns:1.35fr .65fr;gap:var(--eko-gap)}
+@media (max-width:900px){.lead{grid-template-columns:1fr}}
+.lead .lead-img{position:relative;padding-top:56%;overflow:hidden;border-radius:var(--eko-radius)}
+.lead .lead-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.lead .lead-body{background:#fff;border:1px solid #e5e7eb;border-radius:var(--eko-radius);padding:16px}
+
+/* Thumbs 16:9 pentru carduri */
+.thumb-16x9{position:relative;padding-top:56%;overflow:hidden}
+.thumb-16x9 img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+/* Alias for previous templates */
+.ratio-16x9{position:relative;padding-top:56%;overflow:hidden}
+.ratio-16x9 img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+
+/* Pagination */
+.pagination{display:flex;gap:8px;justify-content:center;margin:24px 0}
+.pagination a,.pagination span{padding:8px 12px;border:1px solid #e5e7eb;border-radius:8px;background:#fff}
+.pagination .current{background:var(--eko-primary);color:#fff;border-color:var(--eko-primary)}
